@@ -1,5 +1,6 @@
 /**
  * Эквалайзер
+ * NO CHAINING CALLS
  * @param selector
  * @param timeout
  * @param colWidth
@@ -18,7 +19,7 @@ function Equalizer( selector, timeout, colWidth ) {
 
     // Сохраняем публичный линк на контейнер на случай необходимости
     this.container = document.querySelector( selector );
-    this.timeout = timeout;
+    this.timeout = timeout || 1000;
     this.spans = spans;
 
     if ( !this.container ) {
@@ -75,14 +76,13 @@ Equalizer.prototype.run = function () {
 
     // Выставляем всем "столбикам" начальную высоту равную середине контейнера
     for ( i; i < this.spans.length; i++ ) {
-//        colHeight =  Math.round( this.container.clientHeight * Math.random() );
         this.spans[ i ].style.height = targetSpanHeight + 'px';
     }
 
     this.separate();
 };
 
-Equalizer.prototype.getRandomArbitrary = function(min, max) {
+Equalizer.prototype.getRandomInteger = function(min, max) {
     return Math.round( Math.random() * (max - min) + min );
 };
 
@@ -95,7 +95,7 @@ Equalizer.prototype.separate = function() {
     this.animatedElements = this.spans.length;
 
     for ( i; i < this.spans.length; i++ ) {
-        targetHeight = this.getRandomArbitrary( 0, this.container.clientHeight );
+        targetHeight = this.getRandomInteger( 0, this.container.clientHeight );
         currentSpan = this.spans[ i ];
 
         animateTimeout = this.timeout / ( Math.abs( this.container.clientHeight / 2 - targetHeight ) || 1 );
