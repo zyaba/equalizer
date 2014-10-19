@@ -1,0 +1,9 @@
+
+# OS X system files
+.DS_Store
+*.class
+
+# IntelliJ IDEA
+*.ant
+*.project
+*.idea

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Equalizr</title>
+    <link media="screen" rel="stylesheet" href="equalizer.css"/>
+</head>
+<body>
+
+<h1>Equalizers</h1>
+<div id="eq_1" class="equalizer-wrapper">
+    <h2>First</h2>
+    <div class="equalizer small"></div>
+</div>
+<div id="eq_2" class="equalizer-wrapper">
+    <h2>Second</h2>
+    <div class="equalizer normal"></div>
+</div>
+<div id="eq_3" class="equalizer-wrapper">
+    <h2>Third</h2>
+    <div class="equalizer big"></div>
+</div>
+
+<script src="equalizer.js"></script>
+<script>
+    window.onload = function () {
+        new Equalizer('#eq_1 .equalizer', 1000, 2).run();
+        new Equalizer('#eq_2 .equalizer', 1000, 5).run();
+        new Equalizer('#eq_3 .equalizer', 1000, 10).run();
+    }
+</script>
+</body>
+</html>
