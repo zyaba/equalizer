@@ -32,7 +32,8 @@ function Equalizer( selector, timeout, colWidth ) {
     // Кол-во столбиков
     columnQuantity = Math.ceil( this.container.clientWidth / columnWidth );
 
-    // Создаем span, который будем в дальнейшем клонировать и добавлять во фрагмент
+    // Создаем span, с соотв. стилями,
+    // который будем в дальнейшем клонировать и добавлять во фрагмент
     span = document.createElement('span');
 
     span.style.verticalAlign = 'bottom';
@@ -82,10 +83,19 @@ Equalizer.prototype.run = function () {
     this.separate();
 };
 
+/**
+ * Получения случайного целого числа в заданном ренже
+ * @param min
+ * @param max
+ * @returns {number}
+ */
 Equalizer.prototype.getRandomInteger = function(min, max) {
     return Math.round( Math.random() * (max - min) + min );
 };
 
+/**
+ * Метод разводит "столбики" от центра контейнера в рандомные положения
+ */
 Equalizer.prototype.separate = function() {
     var i = 0,
         currentSpan,
@@ -98,12 +108,18 @@ Equalizer.prototype.separate = function() {
         targetHeight = this.getRandomInteger( 0, this.container.clientHeight );
         currentSpan = this.spans[ i ];
 
+        // Считаем, с какой частотой будет уменьшаться "столбик"
+        // для равномерного изменения высоты в течении указанного таймаута
         animateTimeout = this.timeout / ( Math.abs( this.container.clientHeight / 2 - targetHeight ) || 1 );
         animateTimeout = Math.floor( animateTimeout );
+
         this.animateHeight( currentSpan, targetHeight, animateTimeout, this.join );
     }
 };
 
+/**
+ * Метод сводит все "столбики" к центру контейнера
+ */
 Equalizer.prototype.join = function() {
     var targetSpanHeight = this.container.clientHeight / 2,
         i = 0,
@@ -116,6 +132,9 @@ Equalizer.prototype.join = function() {
     for ( i; i < this.spans.length; i++ ) {
         currentSpan = this.spans[ i ];
         currentHeight = parseInt( getComputedStyle( currentSpan ).height );
+
+        // Считаем, с какой частотой будет уменьшаться "столбик"
+        // для равномерного изменения высоты в течении указанного таймаута
         animateTimeout = this.timeout / ( Math.abs( currentHeight - targetSpanHeight ) || 1 );
         animateTimeout = Math.floor( animateTimeout );
 
@@ -135,17 +154,20 @@ Equalizer.prototype.animateHeight = function( element, targetHeight, animateTime
 
     setTimeout(function () {
         if ( currentHeight < targetHeight ) {
+            // Увеличиваем высоту
             element.style.height = currentHeight + 1 + 'px';
             this.animateHeight( element, targetHeight, animateTimeout, endCallback );
         } else if ( currentHeight > targetHeight ) {
+            // Уменьшаем высоту
             element.style.height = currentHeight - 1 + 'px';
             this.animateHeight( element, targetHeight, animateTimeout, endCallback );
         } else {
+            // Анимация для данного "столбика" завершена
             this.animatedElements -= 1;
 
+            // Вызываем колбэк при окончании анимации всех "столбиков"
             if ( this.animatedElements == 0 ) {
                 endCallback.call( this );
-                console.log('Animation end');
             }
         }
     }.bind( this ), animateTimeout  );

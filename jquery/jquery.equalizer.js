@@ -1,5 +1,6 @@
 /*!
  * jQuery Equalizer plugin
+ * NO CHAINING CALLS
  * Original author: Andrew
  */
 
